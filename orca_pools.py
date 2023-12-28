@@ -5,7 +5,7 @@ import requests
 
 pools = requests.get('https://api.mainnet.orca.so/v1/whirlpool/list').json()['whirlpools']
 include  = ['usd', 'eur', 'sol', 'eth', 'btc', 'uxd', 'cad', 'chf']
-exclude = ['solape', 'sols']
+exclude = ['solape', 'sols', 'solzilla']
 apr_threshold = 100  # in %
 tvl_threshold = 1    # in kUSD
 display_limit = 6
