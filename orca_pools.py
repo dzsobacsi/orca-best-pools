@@ -1,11 +1,12 @@
 #!/usr/bin/env python
+#!/usr/bin/python3
 # coding: utf-8
 
 import requests
 
 pools = requests.get('https://api.mainnet.orca.so/v1/whirlpool/list').json()['whirlpools']
 include  = ['usd', 'eur', 'sol', 'eth', 'btc', 'uxd', 'cad', 'chf']
-exclude = ['solape', 'sols', 'solzilla']
+exclude = ['solape', 'sols', 'solzilla', 'solfnd']
 apr_threshold = 100  # in %
 tvl_threshold = 1    # in kUSD
 display_limit = 6
