@@ -6,12 +6,15 @@ import requests
 import sys
 
 pools = requests.get('https://api.mainnet.orca.so/v1/whirlpool/list').json()['whirlpools']
-include  = ['usd', 'eur', 'sol', 'eth', 'btc', 'uxd', 'cad', 'chf', 'xau']
+include  = [
+    'usd', 'eur', 'sol', 'eth', 'btc', 'uxd', 'cad', 'chf', 'xau', 'hbb', 'dai',
+    'lst'
+]
 exclude = [
     'solape', 'sols', 'solzilla', 'solfnd', 'solama', 'solana', 'sobtc', 
-    'solnic', 'solbird', 'sole'
+    'solnic', 'solbird', 'sole', 'mockjup'
 ]
-apr_threshold = 100  # in %
+apr_threshold = 75   # in %
 tvl_threshold = 1    # in kUSD
 display_limit = int(sys.argv[1]) if len(sys.argv) > 1 else 6
 
@@ -48,8 +51,8 @@ good_pools.sort(key = lambda p: p['apr'], reverse=True)
 for p in good_pools[:display_limit]:
     print (f"""
         {p['pool']}
-        APR: {round(p['apr'] * 100)}%
-        fee: {p['fee'] * 100}%
-        TVL: {round(p['tvl'] / 1000)} kUSD
-        volume: {round(p['volume'] / 1000)} kUSD"""
+        APR: {p['apr']:>11.0%}
+        fee: {p['fee']:>11.2%}
+        TVL: {p['tvl'] / 1000:>10,.0f} kUSD
+        volume: {p['volume'] / 1000:>7,.0f} kUSD"""
     )
