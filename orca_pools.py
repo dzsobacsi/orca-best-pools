@@ -5,7 +5,6 @@
 import requests
 import sys
 
-pools = requests.get('https://api.mainnet.orca.so/v1/whirlpool/list').json()['whirlpools']
 include  = [
     'usd', 'eur', 'sol', 'eth', 'btc', 'uxd', 'cad', 'chf', 'xau', 'hbb', 'dai',
     'lst', 'jup', 'rndr', 'link', 'grt', 'hnt', 'pyth', 'jlp'
@@ -18,7 +17,6 @@ exclude = [
 apr_threshold = 75   # in %
 tvl_threshold = 5    # in kUSD
 default_display_limit = 10
-display_limit = int(sys.argv[1]) if len(sys.argv) > 1 else default_display_limit
 
 def isgood_token(token):
     sym = token['symbol'].lower()
@@ -38,6 +36,7 @@ def isgood_pool(pool):
     return False
 
 def main():
+    pools = requests.get('https://api.mainnet.orca.so/v1/whirlpool/list').json()['whirlpools']
     good_pools = [p for p in pools if isgood_pool(p)]
 
     good_pools = [{
@@ -49,6 +48,8 @@ def main():
     } for p in good_pools]
 
     good_pools.sort(key = lambda p: p['apr'], reverse=True)
+
+    display_limit = int(sys.argv[1]) if len(sys.argv) > 1 else default_display_limit
 
     for p in good_pools[:display_limit]:
         print (f"""
