@@ -8,15 +8,17 @@ import sys
 pools = requests.get('https://api.mainnet.orca.so/v1/whirlpool/list').json()['whirlpools']
 include  = [
     'usd', 'eur', 'sol', 'eth', 'btc', 'uxd', 'cad', 'chf', 'xau', 'hbb', 'dai',
-    'lst'
+    'lst', 'jup', 'rndr', 'link', 'grt', 'hnt', 'pyth', 'jlp'
 ]
 exclude = [
     'solape', 'sols', 'solzilla', 'solfnd', 'solama', 'solana', 'sobtc', 
-    'solnic', 'solbird', 'sole', 'mockjup'
+    'solnic', 'solbird', 'sole', 'mockjup', 'solami', 'solsponge', 'solcade', 
+    'solamo', 'plink', 'gst-sol', 'soladog', 'solbro'
 ]
 apr_threshold = 75   # in %
-tvl_threshold = 1    # in kUSD
-display_limit = int(sys.argv[1]) if len(sys.argv) > 1 else 6
+tvl_threshold = 5    # in kUSD
+default_display_limit = 10
+display_limit = int(sys.argv[1]) if len(sys.argv) > 1 else default_display_limit
 
 def isgood_token(token):
     sym = token['symbol'].lower()
@@ -35,24 +37,27 @@ def isgood_pool(pool):
             return True
     return False
 
+def main():
+    good_pools = [p for p in pools if isgood_pool(p)]
 
-good_pools = [p for p in pools if isgood_pool(p)]
+    good_pools = [{
+        'pool': f"{p['tokenA']['symbol']}-{p['tokenB']['symbol']}",
+        'fee': p['lpFeeRate'],
+        'tvl': p['tvl'],
+        'apr': min(p['totalApr']['month'], p['totalApr']['week']),
+        'volume': min(p['volume']['month'], p['volume']['week'])
+    } for p in good_pools]
 
-good_pools = [{
-    'pool': f"{p['tokenA']['symbol']}-{p['tokenB']['symbol']}",
-    'fee': p['lpFeeRate'],
-    'tvl': p['tvl'],
-    'apr': min(p['totalApr']['month'], p['totalApr']['week']),
-    'volume': min(p['volume']['month'], p['volume']['week'])
-} for p in good_pools]
+    good_pools.sort(key = lambda p: p['apr'], reverse=True)
 
-good_pools.sort(key = lambda p: p['apr'], reverse=True)
+    for p in good_pools[:display_limit]:
+        print (f"""
+            {p['pool']}
+            APR: {p['apr']:>11.0%}
+            fee: {p['fee']:>11.2%}
+            TVL: {p['tvl'] / 1000:>10,.0f} kUSD
+            volume: {p['volume'] / 1000:>7,.0f} kUSD"""
+        )
 
-for p in good_pools[:display_limit]:
-    print (f"""
-        {p['pool']}
-        APR: {p['apr']:>11.0%}
-        fee: {p['fee']:>11.2%}
-        TVL: {p['tvl'] / 1000:>10,.0f} kUSD
-        volume: {p['volume'] / 1000:>7,.0f} kUSD"""
-    )
+if __name__ == '__main__':
+    main()
