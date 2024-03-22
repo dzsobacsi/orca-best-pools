@@ -14,6 +14,7 @@ exclude = [
     'solnic', 'solbird', 'sole', 'mockjup', 'solami', 'solsponge', 'solcade', 
     'solamo', 'plink', 'gst-sol', 'soladog', 'solbro'
 ]
+url = 'https://api.mainnet.orca.so/v1/whirlpool/list'
 apr_threshold = 75   # in %
 tvl_threshold = 5    # in kUSD
 default_display_limit = 10
@@ -35,7 +36,7 @@ def isgood_pool(pool):
             return True
     return False
 
-def calc_pool_data(pool):
+def pool_dict(pool):
     week_or_month = 'week' if pool['totalApr']['week'] < pool['totalApr']['month'] else 'month'
     return {
         'pool': f"{pool['tokenA']['symbol']}-{pool['tokenB']['symbol']}",
@@ -47,21 +48,20 @@ def calc_pool_data(pool):
     }
 
 def main():
-    pools = requests.get('https://api.mainnet.orca.so/v1/whirlpool/list').json()['whirlpools']
-    good_pools = [p for p in pools if isgood_pool(p)]
-    good_pools = [calc_pool_data(p) for p in good_pools]
-    good_pools.sort(key = lambda p: p['apr'], reverse=True)
-
     display_limit = int(sys.argv[1]) if len(sys.argv) > 1 else default_display_limit
 
-    for p in good_pools[:display_limit]:
+    pools = requests.get(url).json()['whirlpools']
+    pools = [p for p in pools if isgood_pool(p)][:display_limit]
+    pools = [pool_dict(p) for p in pools]
+    pools.sort(key = lambda p: p['apr'], reverse=True)
+
+    for p in pools:
         print (f"""
-            {p['pool']} - {p['week_or_month']}ly
-            APR: {p['apr']:>14.0%}
-            fee: {p['fee']:>14.2%}
-            TVL: {p['tvl'] / 1000:>13,.0f} kUSD
-            volume: {p['volume'] / 1000:>10,.0f} kUSD"""
-        )
+        {p['pool']} - {p['week_or_month']}ly
+        APR: {p['apr']:>14.0%}
+        fee: {p['fee']:>14.2%}
+        TVL: {p['tvl'] / 1000:>13,.0f} kUSD
+        volume: {p['volume'] / 1000:>10,.0f} kUSD""")
 
 if __name__ == '__main__':
     main()
