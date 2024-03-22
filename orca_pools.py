@@ -35,29 +35,32 @@ def isgood_pool(pool):
             return True
     return False
 
+def calc_pool_data(pool):
+    week_or_month = 'week' if pool['totalApr']['week'] < pool['totalApr']['month'] else 'month'
+    return {
+        'pool': f"{pool['tokenA']['symbol']}-{pool['tokenB']['symbol']}",
+        'apr': pool['totalApr'][week_or_month],
+        'fee': pool['lpFeeRate'],
+        'tvl': pool['tvl'],
+        'volume': pool['volume'][week_or_month],
+        'week_or_month': week_or_month
+    }
+
 def main():
     pools = requests.get('https://api.mainnet.orca.so/v1/whirlpool/list').json()['whirlpools']
     good_pools = [p for p in pools if isgood_pool(p)]
-
-    good_pools = [{
-        'pool': f"{p['tokenA']['symbol']}-{p['tokenB']['symbol']}",
-        'fee': p['lpFeeRate'],
-        'tvl': p['tvl'],
-        'apr': min(p['totalApr']['month'], p['totalApr']['week']),
-        'volume': min(p['volume']['month'], p['volume']['week'])
-    } for p in good_pools]
-
+    good_pools = [calc_pool_data(p) for p in good_pools]
     good_pools.sort(key = lambda p: p['apr'], reverse=True)
 
     display_limit = int(sys.argv[1]) if len(sys.argv) > 1 else default_display_limit
 
     for p in good_pools[:display_limit]:
         print (f"""
-            {p['pool']}
-            APR: {p['apr']:>11.0%}
-            fee: {p['fee']:>11.2%}
-            TVL: {p['tvl'] / 1000:>10,.0f} kUSD
-            volume: {p['volume'] / 1000:>7,.0f} kUSD"""
+            {p['pool']} - {p['week_or_month']}ly
+            APR: {p['apr']:>14.0%}
+            fee: {p['fee']:>14.2%}
+            TVL: {p['tvl'] / 1000:>13,.0f} kUSD
+            volume: {p['volume'] / 1000:>10,.0f} kUSD"""
         )
 
 if __name__ == '__main__':
