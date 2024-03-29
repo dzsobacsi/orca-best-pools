@@ -7,16 +7,16 @@ import sys
 
 include  = [
     'usd', 'eur', 'sol', 'eth', 'btc', 'uxd', 'cad', 'chf', 'xau', 'hbb', 'dai',
-    'lst', 'jup', 'rndr', 'link', 'grt', 'hnt', 'pyth', 'jlp'
+    'lst', 'jup', 'link', 'grt', 'hnt', 'pyth', 'jlp', 'render'
 ]
 exclude = [
     'solape', 'sols', 'solzilla', 'solfnd', 'solama', 'solana', 'sobtc', 
     'solnic', 'solbird', 'sole', 'mockjup', 'solami', 'solsponge', 'solcade', 
-    'solamo', 'plink', 'gst-sol', 'soladog', 'solbro'
+    'solamo', 'plink', 'gst-sol', 'soladog', 'solbro', 'solx', 'solcc'
 ]
 url = 'https://api.mainnet.orca.so/v1/whirlpool/list'
 apr_threshold = 75   # in %
-tvl_threshold = 5    # in kUSD
+tvl_threshold = 10   # in kUSD
 default_display_limit = 10
 
 def isgood_token(token):
