@@ -24,7 +24,7 @@ def get_args():
         description="Orca Pools - selection of the best pools on Orca")
     parser.add_argument("-v", "--verbose", action="store_true",
                 help="In verbose mode, you can also see the tokens' addresses")
-    parser.add_argument("-d", "--display-limit", type=int,
+    parser.add_argument("-d", "--display-limit", type=int, default=default_display_limit,
                 help="Set the number of pools to display")
     return parser.parse_args()
 
@@ -60,13 +60,12 @@ def pool_dict(pool):
 
 def main():
     args = get_args()
-    display_limit = args.display_limit if args.display_limit else default_display_limit
 
     pools = requests.get(url).json()['whirlpools']
     pools = [pool_dict(p) for p in pools if isgood_pool(p)]
     pools.sort(key = lambda p: p['apr'], reverse=True)
 
-    for p in pools[:display_limit]:
+    for p in pools[:args.display_limit]:
         print (f"""
         {p['pool']} - {p['week_or_month']}ly
         APR: {p['apr']:>14.0%}
