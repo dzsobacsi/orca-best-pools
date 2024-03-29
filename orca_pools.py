@@ -51,8 +51,7 @@ def main():
     display_limit = int(sys.argv[1]) if len(sys.argv) > 1 else default_display_limit
 
     pools = requests.get(url).json()['whirlpools']
-    pools = [p for p in pools if isgood_pool(p)]
-    pools = [pool_dict(p) for p in pools]
+    pools = [pool_dict(p) for p in pools if isgood_pool(p)]
     pools.sort(key = lambda p: p['apr'], reverse=True)
 
     for p in pools[:display_limit]:
