@@ -2,8 +2,8 @@
 # coding: utf-8
 '''#!/usr/bin/env python'''
 
+import argparse
 import requests
-import sys
 
 include  = [
     'usd', 'eur', 'sol', 'eth', 'btc', 'uxd', 'cad', 'chf', 'xau', 'hbb', 'dai',
@@ -18,6 +18,15 @@ url = 'https://api.mainnet.orca.so/v1/whirlpool/list'
 apr_threshold = 75   # in %
 tvl_threshold = 10   # in kUSD
 default_display_limit = 10
+
+def get_args():
+    parser = argparse.ArgumentParser(
+        description="Orca Pools - selection of the best pools on Orca")
+    parser.add_argument("-v", "--verbose", action="store_true",
+                help="In verbose mode, you can also see the tokens' addresses")
+    parser.add_argument("-d", "--display-limit", type=int,
+                help="Set the number of pools to display")
+    return parser.parse_args()
 
 def isgood_token(token):
     sym = token['symbol'].lower()
@@ -44,11 +53,14 @@ def pool_dict(pool):
         'fee': pool['lpFeeRate'],
         'tvl': pool['tvl'],
         'volume': pool['volume'][week_or_month],
-        'week_or_month': week_or_month
+        'week_or_month': week_or_month,
+        'tokenA': pool['tokenA']['mint'],
+        'tokenB': pool['tokenB']['mint']
     }
 
 def main():
-    display_limit = int(sys.argv[1]) if len(sys.argv) > 1 else default_display_limit
+    args = get_args()
+    display_limit = args.display_limit if args.display_limit else default_display_limit
 
     pools = requests.get(url).json()['whirlpools']
     pools = [pool_dict(p) for p in pools if isgood_pool(p)]
@@ -61,6 +73,10 @@ def main():
         fee: {p['fee']:>14.2%}
         TVL: {p['tvl'] / 1000:>13,.0f} kUSD
         volume: {p['volume'] / 1000:>10,.0f} kUSD""")
+
+        if args.verbose:
+            print(f"        tokenA: {p['tokenA']}")
+            print(f"        tokenB: {p['tokenB']}")
 
 if __name__ == '__main__':
     main()
