@@ -14,6 +14,9 @@ exclude = [
     'solnic', 'solbird', 'sole', 'mockjup', 'solami', 'solsponge', 'solcade', 
     'solamo', 'plink', 'gst-sol', 'soladog', 'solbro', 'solx', 'solcc'
 ]
+addr_exclude = [
+    'EtBc6gkCvsB9c6f5wSbwG8wPjRqXMB5euptK6bqG1R4X'
+]
 url = 'https://api.mainnet.orca.so/v1/whirlpool/list'
 apr_threshold = 75   # in %
 tvl_threshold = 10   # in kUSD
@@ -30,8 +33,9 @@ def get_args():
 
 def isgood_token(token):
     sym = token['symbol'].lower()
+    addr = token['mint']
     for i in include:
-        if i.lower() in sym and sym not in exclude:
+        if i.lower() in sym and sym not in exclude and addr not in addr_exclude:
             return True
     return False
 
