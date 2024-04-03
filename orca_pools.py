@@ -9,14 +9,18 @@ include  = [
     'usd', 'eur', 'sol', 'eth', 'btc', 'uxd', 'cad', 'chf', 'xau', 'hbb', 'dai',
     'lst', 'jup', 'link', 'grt', 'hnt', 'pyth', 'jlp', 'render'
 ]
+addr_include = [
+    '85VBFQZC9TZkfaptBWjvUw7YbZjy52A6mjtPGjstQAmQ', # W
+]
 exclude = [
     'solape', 'sols', 'solzilla', 'solfnd', 'solama', 'solana', 'sobtc', 
     'solnic', 'solbird', 'sole', 'mockjup', 'solami', 'solsponge', 'solcade', 
     'solamo', 'plink', 'gst-sol', 'soladog', 'solbro', 'solx', 'solcc'
 ]
 addr_exclude = [
-    'EtBc6gkCvsB9c6f5wSbwG8wPjRqXMB5euptK6bqG1R4X'
+    'EtBc6gkCvsB9c6f5wSbwG8wPjRqXMB5euptK6bqG1R4X', # BTC - Batcat
 ]
+
 url = 'https://api.mainnet.orca.so/v1/whirlpool/list'
 apr_threshold = 75   # in %
 tvl_threshold = 10   # in kUSD
@@ -34,6 +38,10 @@ def get_args():
 def isgood_token(token):
     sym = token['symbol'].lower()
     addr = token['mint']
+
+    if addr in addr_include:
+        return True
+    
     for i in include:
         if i.lower() in sym and sym not in exclude and addr not in addr_exclude:
             return True
