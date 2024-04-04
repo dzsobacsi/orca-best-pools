@@ -11,6 +11,7 @@ include  = [
 ]
 addr_include = [
     '85VBFQZC9TZkfaptBWjvUw7YbZjy52A6mjtPGjstQAmQ', # W
+    'ZEUS1aR7aX8DFFJf5QjWj2ftDDdNTroMNGo8YoQm3Gq', # Zeus
 ]
 exclude = [
     'solape', 'sols', 'solzilla', 'solfnd', 'solama', 'solana', 'sobtc', 
@@ -33,6 +34,8 @@ def get_args():
                 help="In verbose mode, you can also see the tokens' addresses")
     parser.add_argument("-d", "--display-limit", type=int, default=default_display_limit,
                 help="Set the number of pools to display")
+    parser.add_argument("-t", "--tvl", action="store_true", 
+                help="Sorts the pools by TVL*APR instead of APR")
     return parser.parse_args()
 
 def isgood_token(token):
@@ -70,12 +73,15 @@ def pool_dict(pool):
         'tokenB': pool['tokenB']['mint']
     }
 
+def my_key(is_tvl):
+    return lambda p: p['apr'] * p['tvl'] if is_tvl else p['apr']
+
 def main():
     args = get_args()
 
     pools = requests.get(url).json()['whirlpools']
     pools = [pool_dict(p) for p in pools if isgood_pool(p)]
-    pools.sort(key = lambda p: p['apr'], reverse=True)
+    pools.sort(key = my_key(args.tvl), reverse=True)
 
     for p in pools[:args.display_limit]:
         print (f"""
