@@ -7,16 +7,20 @@ import requests
 
 include  = [
     'usd', 'eur', 'sol', 'eth', 'btc', 'uxd', 'cad', 'chf', 'xau', 'hbb', 'dai',
-    'lst', 'jup', 'link', 'grt', 'hnt', 'pyth', 'jlp', 'render'
+    'lst', 'link', 'grt', 'jlp', 'render'
 ]
-addr_include = [
+risk_include = [
     '85VBFQZC9TZkfaptBWjvUw7YbZjy52A6mjtPGjstQAmQ', # W
-    'ZEUS1aR7aX8DFFJf5QjWj2ftDDdNTroMNGo8YoQm3Gq', # Zeus
+    'ZEUS1aR7aX8DFFJf5QjWj2ftDDdNTroMNGo8YoQm3Gq',  # ZEUS
+    'JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN',  # JUP
+    'DLUNTKRQt7CrpqSX1naHUYoBznJ9pvMP65uCeWQgYnRK', # SOLC
+    'HZ1JovNiVvGrGNiiYvEozEVgZ58xaU3RKwX8eACQBCt3', # PYTH
+    'hntyVP6YFm1Hg25TN9WGLqM12b8TQmcknKrdu1oxWux',  # HNT
 ]
 exclude = [
     'solape', 'sols', 'solzilla', 'solfnd', 'solama', 'solana', 'sobtc', 
     'solnic', 'solbird', 'sole', 'mockjup', 'solami', 'solsponge', 'solcade', 
-    'solamo', 'plink', 'gst-sol', 'soladog', 'solbro', 'solx', 'solcc'
+    'solamo', 'plink', 'gst-sol', 'soladog', 'solbro', 'solx', 'solcc', 'solc'
 ]
 addr_exclude = [
     'EtBc6gkCvsB9c6f5wSbwG8wPjRqXMB5euptK6bqG1R4X', # BTC - Batcat
@@ -32,17 +36,20 @@ def get_args():
         description="Orca Pools - selection of the best pools on Orca")
     parser.add_argument("-v", "--verbose", action="store_true",
                 help="In verbose mode, you can also see the tokens' addresses")
-    parser.add_argument("-d", "--display-limit", type=int, default=default_display_limit,
+    parser.add_argument("-d", "--display-limit", type=int, 
+                default=default_display_limit,
                 help="Set the number of pools to display")
     parser.add_argument("-t", "--tvl", action="store_true", 
                 help="Sorts the pools by TVL*APR instead of APR")
+    parser.add_argument("-r", "--risk-on", action="store_true", 
+                help="In risk-on mode, higher risk pools are also included")
     return parser.parse_args()
 
-def isgood_token(token):
+def isgood_token(token, risk_on):
     sym = token['symbol'].lower()
     addr = token['mint']
 
-    if addr in addr_include:
+    if risk_on and addr in risk_include:
         return True
     
     for i in include:
@@ -50,11 +57,11 @@ def isgood_token(token):
             return True
     return False
 
-def isgood_pool(pool):
+def isgood_pool(pool, risk_on):
     if not (pool.get('totalApr', {}).get('month', 0) and pool.get('totalApr', {}).get('week', 0)):
         return False
-    if      isgood_token(pool['tokenA']) \
-        and isgood_token(pool['tokenB']) \
+    if      isgood_token(pool['tokenA'], risk_on=risk_on) \
+        and isgood_token(pool['tokenB'], risk_on=risk_on) \
         and min(pool['totalApr']['month'], pool['totalApr']['week']) > apr_threshold / 100 \
         and pool['tvl'] > tvl_threshold * 1000:
             return True
@@ -80,7 +87,7 @@ def main():
     args = get_args()
 
     pools = requests.get(url).json()['whirlpools']
-    pools = [pool_dict(p) for p in pools if isgood_pool(p)]
+    pools = [pool_dict(p) for p in pools if isgood_pool(p, risk_on=args.risk_on)]
     pools.sort(key = my_key(args.tvl), reverse=True)
 
     for p in pools[:args.display_limit]:
