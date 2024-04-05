@@ -36,13 +36,15 @@ def get_args():
         description="Orca Pools - selection of the best pools on Orca")
     parser.add_argument("-v", "--verbose", action="store_true",
                 help="In verbose mode, you can also see the tokens' addresses")
+    parser.add_argument("-t", "--tvl", action="store_true", 
+                help="Sorts the pools by sqrt(TVL)*APR instead of APR")
+    parser.add_argument("-r", "--risk-on", action="store_true", 
+                help="In risk-on mode, higher risk pools are also included")
+    parser.add_argument("-f", "--filter", type=str, 
+                help="Filter the pools by token symbol")
     parser.add_argument("-d", "--display-limit", type=int, 
                 default=default_display_limit,
                 help="Set the number of pools to display")
-    parser.add_argument("-t", "--tvl", action="store_true", 
-                help="Sorts the pools by TVL*APR instead of APR")
-    parser.add_argument("-r", "--risk-on", action="store_true", 
-                help="In risk-on mode, higher risk pools are also included")
     return parser.parse_args()
 
 def isgood_token(token, risk_on):
@@ -77,17 +79,25 @@ def pool_dict(pool):
         'volume': pool['volume'][week_or_month],
         'week_or_month': week_or_month,
         'tokenA': pool['tokenA']['mint'],
-        'tokenB': pool['tokenB']['mint']
+        'tokenB': pool['tokenB']['mint'],
+        'symbolA': pool['tokenA']['symbol'],
+        'symbolB': pool['tokenB']['symbol'],
     }
 
 def my_key(is_tvl):
-    return lambda p: p['apr'] * p['tvl'] if is_tvl else p['apr']
+    return lambda p: p['apr'] * p['tvl'] ** 0.5 if is_tvl else p['apr']
 
 def main():
     args = get_args()
 
     pools = requests.get(url).json()['whirlpools']
     pools = [pool_dict(p) for p in pools if isgood_pool(p, risk_on=args.risk_on)]
+
+    if args.filter:
+        pools = [p for p in pools \
+                if args.filter.lower() == p['symbolA'].lower() \
+                or args.filter.lower() == p['symbolB'].lower()]
+        
     pools.sort(key = my_key(args.tvl), reverse=True)
 
     for p in pools[:args.display_limit]:
