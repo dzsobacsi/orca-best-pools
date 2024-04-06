@@ -38,8 +38,8 @@ def get_args():
                 help="In verbose mode, you can also see the tokens' addresses")
     parser.add_argument("-t", "--tvl", action="store_true", 
                 help="Sorts the pools by sqrt(TVL)*APR instead of APR")
-    parser.add_argument("-r", "--risk-on", action="store_true", 
-                help="In risk-on mode, higher risk pools are also included")
+    parser.add_argument("-r", "--risk-off", action="store_true", 
+                help="In risk-off mode, only lower risk pools are listed")
     parser.add_argument("-f", "--filter", type=str, 
                 help="Filter the pools by token symbol")
     parser.add_argument("-d", "--display-limit", type=int, 
@@ -47,11 +47,11 @@ def get_args():
                 help="Set the number of pools to display")
     return parser.parse_args()
 
-def isgood_token(token, risk_on):
+def isgood_token(token, risk_off):
     sym = token['symbol'].lower()
     addr = token['mint']
 
-    if risk_on and addr in risk_include:
+    if not risk_off and addr in risk_include:
         return True
     
     for i in include:
@@ -59,11 +59,11 @@ def isgood_token(token, risk_on):
             return True
     return False
 
-def isgood_pool(pool, risk_on):
+def isgood_pool(pool, risk_off):
     if not (pool.get('totalApr', {}).get('month', 0) and pool.get('totalApr', {}).get('week', 0)):
         return False
-    if      isgood_token(pool['tokenA'], risk_on=risk_on) \
-        and isgood_token(pool['tokenB'], risk_on=risk_on) \
+    if      isgood_token(pool['tokenA'], risk_off=risk_off) \
+        and isgood_token(pool['tokenB'], risk_off=risk_off) \
         and min(pool['totalApr']['month'], pool['totalApr']['week']) > apr_threshold / 100 \
         and pool['tvl'] > tvl_threshold * 1000:
             return True
@@ -91,7 +91,7 @@ def main():
     args = get_args()
 
     pools = requests.get(url).json()['whirlpools']
-    pools = [pool_dict(p) for p in pools if isgood_pool(p, risk_on=args.risk_on)]
+    pools = [pool_dict(p) for p in pools if isgood_pool(p, risk_off=args.risk_off)]
 
     if args.filter:
         pools = [p for p in pools \
