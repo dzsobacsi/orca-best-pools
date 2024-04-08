@@ -16,6 +16,7 @@ risk_include = [
     'DLUNTKRQt7CrpqSX1naHUYoBznJ9pvMP65uCeWQgYnRK', # SOLC
     'HZ1JovNiVvGrGNiiYvEozEVgZ58xaU3RKwX8eACQBCt3', # PYTH
     'hntyVP6YFm1Hg25TN9WGLqM12b8TQmcknKrdu1oxWux',  # HNT
+    'TNSRxcUxoT9xBG3de7PiJyTDYu7kskLqcpddxnEJAS6'   # TNSR
 ]
 exclude = [
     'solape', 'sols', 'solzilla', 'solfnd', 'solama', 'solana', 'sobtc', 
