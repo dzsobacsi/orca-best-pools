@@ -28,8 +28,9 @@ addr_exclude = [
 ]
 
 url = 'https://api.mainnet.orca.so/v1/whirlpool/list'
-apr_threshold = 75   # in %
-tvl_threshold = 10   # in kUSD
+apr_min = 75    # in %
+apr_max = 10000 # in %
+tvl_min = 10    # in kUSD
 default_display_limit = 10
 
 def get_args():
@@ -65,8 +66,9 @@ def isgood_pool(pool, risk_off):
         return False
     if      isgood_token(pool['tokenA'], risk_off=risk_off) \
         and isgood_token(pool['tokenB'], risk_off=risk_off) \
-        and min(pool['totalApr']['month'], pool['totalApr']['week']) > apr_threshold / 100 \
-        and pool['tvl'] > tvl_threshold * 1000:
+        and min(pool['totalApr']['month'], pool['totalApr']['week']) > apr_min / 100 \
+        and min(pool['totalApr']['month'], pool['totalApr']['week']) < apr_max / 100 \
+        and pool['tvl'] > tvl_min * 1000:
             return True
     return False
 
