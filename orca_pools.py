@@ -4,34 +4,10 @@
 
 import argparse
 import requests
+import yaml
 
-include  = [
-    'usd', 'eur', 'sol', 'eth', 'btc', 'uxd', 'cad', 'chf', 'xau', 'hbb', 'dai',
-    'lst', 'link', 'grt', 'jlp', 'render'
-]
-risk_include = [
-    '85VBFQZC9TZkfaptBWjvUw7YbZjy52A6mjtPGjstQAmQ', # W
-    'ZEUS1aR7aX8DFFJf5QjWj2ftDDdNTroMNGo8YoQm3Gq',  # ZEUS
-    'JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN',  # JUP
-    'DLUNTKRQt7CrpqSX1naHUYoBznJ9pvMP65uCeWQgYnRK', # SOLC
-    'HZ1JovNiVvGrGNiiYvEozEVgZ58xaU3RKwX8eACQBCt3', # PYTH
-    'hntyVP6YFm1Hg25TN9WGLqM12b8TQmcknKrdu1oxWux',  # HNT
-    'TNSRxcUxoT9xBG3de7PiJyTDYu7kskLqcpddxnEJAS6'   # TNSR
-]
-exclude = [
-    'solape', 'sols', 'solzilla', 'solfnd', 'solama', 'solana', 'sobtc', 
-    'solnic', 'solbird', 'sole', 'mockjup', 'solami', 'solsponge', 'solcade', 
-    'solamo', 'plink', 'gst-sol', 'soladog', 'solbro', 'solx', 'solcc', 'solc'
-]
-addr_exclude = [
-    'EtBc6gkCvsB9c6f5wSbwG8wPjRqXMB5euptK6bqG1R4X', # BTC - Batcat
-]
-
-url = 'https://api.mainnet.orca.so/v1/whirlpool/list'
-apr_min = 75    # in %
-apr_max = 10000 # in %
-tvl_min = 10    # in kUSD
-default_display_limit = 10
+with open('parameters.yaml') as f:
+    params = yaml.safe_load(f)
 
 def get_args():
     parser = argparse.ArgumentParser(
@@ -45,7 +21,7 @@ def get_args():
     parser.add_argument("-f", "--filter", type=str, 
                 help="Filter the pools by token symbol")
     parser.add_argument("-d", "--display-limit", type=int, 
-                default=default_display_limit,
+                default=params['default_display_limit'],
                 help="Set the number of pools to display")
     return parser.parse_args()
 
@@ -53,22 +29,27 @@ def isgood_token(token, risk_off):
     sym = token['symbol'].lower()
     addr = token['mint']
 
-    if not risk_off and addr in risk_include:
+    if not risk_off and addr in params['risk_include']:
         return True
     
-    for i in include:
-        if i.lower() in sym and sym not in exclude and addr not in addr_exclude:
-            return True
+    for i in params['include']:
+        if i.lower() in sym \
+            and sym not in params['exclude'] \
+            and addr not in params['addr_exclude']:
+                return True
     return False
 
 def isgood_pool(pool, risk_off):
-    if not (pool.get('totalApr', {}).get('month', 0) and pool.get('totalApr', {}).get('week', 0)):
-        return False
+    if not (
+            pool.get('totalApr', {}).get('month', 0) \
+        and pool.get('totalApr', {}).get('week', 0)):
+            return False
+    
     if      isgood_token(pool['tokenA'], risk_off=risk_off) \
         and isgood_token(pool['tokenB'], risk_off=risk_off) \
-        and min(pool['totalApr']['month'], pool['totalApr']['week']) > apr_min / 100 \
-        and min(pool['totalApr']['month'], pool['totalApr']['week']) < apr_max / 100 \
-        and pool['tvl'] > tvl_min * 1000:
+        and min(pool['totalApr']['month'], pool['totalApr']['week']) > params['apr_min'] / 100 \
+        and min(pool['totalApr']['month'], pool['totalApr']['week']) < params['apr_max'] / 100 \
+        and pool['tvl'] > params['tvl_min'] * 1000:
             return True
     return False
 
@@ -93,7 +74,7 @@ def my_key(is_tvl):
 def main():
     args = get_args()
 
-    pools = requests.get(url).json()['whirlpools']
+    pools = requests.get(params['url']).json()['whirlpools']
     pools = [pool_dict(p) for p in pools if isgood_pool(p, risk_off=args.risk_off)]
 
     if args.filter:
