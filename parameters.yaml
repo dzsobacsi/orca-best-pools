@@ -1,5 +1,5 @@
 url: "https://api.mainnet.orca.so/v1/whirlpool/list"
-apr_min: 75     # in %
+apr_min: 30     # in %
 apr_max: 10000  # in %
 tvl_min: 10     # in kUSD
 default_display_limit: 10
