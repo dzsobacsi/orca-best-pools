@@ -1,23 +1,15 @@
 #!./venv/bin/python
 # coding: utf-8
 
-import requests
-from orca_pools import *
-from raydium_pools import *
+from orca_pools import get_args, get_orca_pools, pool_print, my_key
+from raydium_pools import get_rayd_pools
 
 def main():
     args = get_args()
-    orca_pools = requests.get(params['orca_url']).json()['whirlpools']
-    orca_pools = [pool_dict_orca(p) for p in orca_pools if isgood_pool_orca(p, risk_off=args.risk_off)]
-
-    rayd_pools = requests.get(params['raydium_url']).json()['data']
-    rayd_pools = [pool_dict_rayd(p) for p in rayd_pools if isgood_pool_rayd(p, risk_off=args.risk_off)] 
-
+    orca_pools = get_orca_pools(args.risk_off, args.filter)
+    rayd_pools = get_rayd_pools(args.risk_off, args.filter)
+    
     pools = orca_pools + rayd_pools
-
-    if args.filter:
-        pools = pool_filter(pools, args.filter)
-        
     pools.sort(key = my_key(args.tvl), reverse=True)
 
     for p in pools[:args.display_limit]:

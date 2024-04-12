@@ -34,6 +34,13 @@ def get_args():
                 help="Set the number of pools to display")
     return parser.parse_args()
 
+def get_orca_pools(risk_off, filter):
+    pools = requests.get(params['orca_url']).json()['whirlpools']
+    pools = [pool_dict_orca(p) for p in pools if isgood_pool_orca(p, risk_off=risk_off)]
+    if filter:
+        pools = pool_filter(pools, filter)
+    return pools
+
 def isgood_token(addr, risk_off):
     if addr not in tokens:
         return False
@@ -102,13 +109,7 @@ def my_key(is_tvl):
 
 def main():
     args = get_args()
-
-    pools = requests.get(params['orca_url']).json()['whirlpools']
-    pools = [pool_dict_orca(p) for p in pools if isgood_pool_orca(p, risk_off=args.risk_off)]
-
-    if args.filter:
-        pools = pool_filter(pools, args.filter)
-        
+    pools = get_orca_pools(args.risk_off, args.filter)
     pools.sort(key = my_key(args.tvl), reverse=True)
 
     for p in pools[:args.display_limit]:

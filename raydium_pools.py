@@ -38,15 +38,17 @@ def pool_dict_rayd(pool):
         'symbolB': tokens[pool['mintB']],
     }
 
+def get_rayd_pools(risk_off, filter):
+    pools = requests.get(params['raydium_url']).json()['data']
+    pools = [pool_dict_rayd(p) for p in pools if isgood_pool_rayd(p, risk_off=risk_off)]
+    if filter:
+        pools = pool_filter(pools, filter)
+    return pools
+
+
 def main():
     args = get_args()
-
-    pools = requests.get(params['raydium_url']).json()['data']
-    pools = [pool_dict_rayd(p) for p in pools if isgood_pool_rayd(p, risk_off=args.risk_off)]
-
-    if args.filter:
-        pools = pool_filter(pools, args.filter)
-        
+    pools = get_rayd_pools(args.risk_off, args.filter)
     pools.sort(key = my_key(args.tvl), reverse=True)
 
     for p in pools[:args.display_limit]:
