@@ -1,6 +1,5 @@
-#!/usr/bin/python3
+#!./venv/bin/python
 # coding: utf-8
-'''#!/usr/bin/env python'''
 
 import argparse
 import requests
@@ -74,7 +73,7 @@ def my_key(is_tvl):
 def main():
     args = get_args()
 
-    pools = requests.get(params['url']).json()['whirlpools']
+    pools = requests.get(params['orca_url']).json()['whirlpools']
     pools = [pool_dict(p) for p in pools if isgood_pool(p, risk_off=args.risk_off)]
 
     if args.filter:

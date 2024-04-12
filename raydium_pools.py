@@ -1,10 +1,11 @@
+#!./venv/bin/python
+# coding: utf-8
+
 import argparse
 import csv
 from icecream import ic
 import requests
 import yaml
-
-url = 'https://api.raydium.io/v2/ammV3/ammPools'
 
 with open('parameters.yaml') as f:
     params = yaml.safe_load(f)
@@ -86,7 +87,7 @@ def my_key(is_tvl):
 def main():
     args = get_args()
 
-    pools = requests.get(url).json()['data']
+    pools = requests.get(params['raydium_url']).json()['data']
     pools = [pool_dict(p) for p in pools if isgood_pool(p, risk_off=args.risk_off)]
 
     if args.filter:
@@ -95,8 +96,6 @@ def main():
                 or args.filter.lower() == p['symbolB'].lower()]
         
     pools.sort(key = my_key(args.tvl), reverse=True)
-
-    ic(pools[:args.display_limit])
 
     for p in pools[:args.display_limit]:
         print (f"""

@@ -1,4 +1,5 @@
-url: "https://api.mainnet.orca.so/v1/whirlpool/list"
+orca_url: "https://api.mainnet.orca.so/v1/whirlpool/list"
+raydium_url: "https://api.raydium.io/v2/ammV3/ammPools"
 apr_min: 30     # in %
 apr_max: 10000  # in %
 tvl_min: 10     # in kUSD
