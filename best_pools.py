@@ -1,18 +1,9 @@
 #!./venv/bin/python
 # coding: utf-8
 
-import csv
 import requests
-import yaml
 from orca_pools import *
 from raydium_pools import *
-
-with open('parameters.yaml') as f:
-    params = yaml.safe_load(f)
-
-with open('tokens.csv') as f:
-    reader = csv.DictReader(f)
-    tokens = {row['address']: row['symbol'] for row in reader}
 
 def main():
     args = get_args()

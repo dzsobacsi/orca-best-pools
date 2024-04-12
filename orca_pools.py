@@ -3,8 +3,13 @@
 
 import argparse
 import csv
+import os
 import requests
+from tokenlist import get_tokenlist
 import yaml
+
+if not os.path.exists('tokens.csv'):
+    get_tokenlist()
 
 with open('parameters.yaml') as f:
     params = yaml.safe_load(f)

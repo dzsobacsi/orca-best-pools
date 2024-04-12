@@ -1,17 +1,8 @@
 #!./venv/bin/python
 # coding: utf-8
 
-import csv
 import requests
-import yaml
-from orca_pools import get_args, isgood_token, my_key, pool_filter, pool_print
-
-with open('parameters.yaml') as f:
-    params = yaml.safe_load(f)
-
-with open('tokens.csv') as f:
-    reader = csv.DictReader(f)
-    tokens = {row['address']: row['symbol'] for row in reader}
+from orca_pools import *
 
 def isgood_pool_rayd(pool, risk_off):
     if not (
