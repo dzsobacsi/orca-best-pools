@@ -2,11 +2,16 @@
 # coding: utf-8
 
 import argparse
+import csv
 import requests
 import yaml
 
 with open('parameters.yaml') as f:
     params = yaml.safe_load(f)
+
+with open('tokens.csv') as f:
+    reader = csv.DictReader(f)
+    tokens = {row['address']: row['symbol'] for row in reader}
 
 def get_args():
     parser = argparse.ArgumentParser(
@@ -24,9 +29,11 @@ def get_args():
                 help="Set the number of pools to display")
     return parser.parse_args()
 
-def isgood_token(token, risk_off):
-    sym = token['symbol'].lower()
-    addr = token['mint']
+def isgood_token(addr, risk_off):
+    if addr not in tokens:
+        return False
+    
+    sym = tokens[addr].lower()
 
     if not risk_off and addr in params['risk_include']:
         return True
@@ -38,23 +45,24 @@ def isgood_token(token, risk_off):
                 return True
     return False
 
-def isgood_pool(pool, risk_off):
+def isgood_pool_orca(pool, risk_off):
     if not (
             pool.get('totalApr', {}).get('month', 0) \
         and pool.get('totalApr', {}).get('week', 0)):
             return False
     
-    if      isgood_token(pool['tokenA'], risk_off=risk_off) \
-        and isgood_token(pool['tokenB'], risk_off=risk_off) \
+    if      isgood_token(pool['tokenA']['mint'], risk_off=risk_off) \
+        and isgood_token(pool['tokenB']['mint'], risk_off=risk_off) \
         and min(pool['totalApr']['month'], pool['totalApr']['week']) > params['apr_min'] / 100 \
         and min(pool['totalApr']['month'], pool['totalApr']['week']) < params['apr_max'] / 100 \
         and pool['tvl'] > params['tvl_min'] * 1000:
             return True
     return False
 
-def pool_dict(pool):
+def pool_dict_orca(pool):
     week_or_month = 'week' if pool['totalApr']['week'] < pool['totalApr']['month'] else 'month'
     return {
+        'platform': 'Orca',
         'pool': f"{pool['tokenA']['symbol']}-{pool['tokenB']['symbol']}",
         'apr': pool['totalApr'][week_or_month],
         'fee': pool['lpFeeRate'],
@@ -67,6 +75,18 @@ def pool_dict(pool):
         'symbolB': pool['tokenB']['symbol'],
     }
 
+def pool_print(p, verbose):
+    print (f"""
+    {p['pool']} - {p['week_or_month']}ly
+    APR: {p['apr']:>14.0%}
+    fee: {p['fee']:>14.2%}
+    TVL: {p['tvl'] / 1000:>13,.0f} kUSD
+    volume: {p['volume'] / 1000:>10,.0f} kUSD""")
+
+    if verbose:
+        print(f"        tokenA: {p['tokenA']}")
+        print(f"        tokenB: {p['tokenB']}")
+
 def my_key(is_tvl):
     return lambda p: p['apr'] * p['tvl'] ** 0.5 if is_tvl else p['apr']
 
@@ -74,7 +94,7 @@ def main():
     args = get_args()
 
     pools = requests.get(params['orca_url']).json()['whirlpools']
-    pools = [pool_dict(p) for p in pools if isgood_pool(p, risk_off=args.risk_off)]
+    pools = [pool_dict_orca(p) for p in pools if isgood_pool_orca(p, risk_off=args.risk_off)]
 
     if args.filter:
         pools = [p for p in pools \
@@ -84,16 +104,7 @@ def main():
     pools.sort(key = my_key(args.tvl), reverse=True)
 
     for p in pools[:args.display_limit]:
-        print (f"""
-        {p['pool']} - {p['week_or_month']}ly
-        APR: {p['apr']:>14.0%}
-        fee: {p['fee']:>14.2%}
-        TVL: {p['tvl'] / 1000:>13,.0f} kUSD
-        volume: {p['volume'] / 1000:>10,.0f} kUSD""")
-
-        if args.verbose:
-            print(f"        tokenA: {p['tokenA']}")
-            print(f"        tokenB: {p['tokenB']}")
+        pool_print(p, args.verbose)
 
 if __name__ == '__main__':
     main()
