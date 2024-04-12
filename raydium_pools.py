@@ -4,7 +4,7 @@
 import csv
 import requests
 import yaml
-from orca_pools import get_args, isgood_token, my_key, pool_print
+from orca_pools import get_args, isgood_token, my_key, pool_filter, pool_print
 
 with open('parameters.yaml') as f:
     params = yaml.safe_load(f)
@@ -54,9 +54,7 @@ def main():
     pools = [pool_dict_rayd(p) for p in pools if isgood_pool_rayd(p, risk_off=args.risk_off)]
 
     if args.filter:
-        pools = [p for p in pools \
-                if args.filter.lower() == p['symbolA'].lower() \
-                or args.filter.lower() == p['symbolB'].lower()]
+        pools = pool_filter(pools, args.filter)
         
     pools.sort(key = my_key(args.tvl), reverse=True)
 

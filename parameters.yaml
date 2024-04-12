@@ -22,7 +22,7 @@ include:
   - "jlp"
   - "render"
 risk_include: 
-  - "85VBFQZC9TZkfaptBWjvUw7YbZjy52A6mjtPGjstQAmQ"  # W (Whirpool)
+  - "85VBFQZC9TZkfaptBWjvUw7YbZjy52A6mjtPGjstQAmQ"  # W (Wormhole)
   - "ZEUS1aR7aX8DFFJf5QjWj2ftDDdNTroMNGo8YoQm3Gq"   # ZEUS
   - "JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN"   # JUP
   - "DLUNTKRQt7CrpqSX1naHUYoBznJ9pvMP65uCeWQgYnRK"  # SOLC
@@ -51,6 +51,5 @@ exclude:
   - "solbro"
   - "solx"
   - "solcc"
-  - "solc"
 addr_exclude: 
   - "EtBc6gkCvsB9c6f5wSbwG8wPjRqXMB5euptK6bqG1R4X"  # BTC - Batcat
