@@ -15,7 +15,7 @@ with open('tokens.csv') as f:
 
 def get_args():
     parser = argparse.ArgumentParser(
-        description="Orca Pools - selection of the best pools on Orca")
+        description="Best Pools - selection of the best liquidity pools on Solana")
     parser.add_argument("-v", "--verbose", action="store_true",
                 help="In verbose mode, you can also see the tokens' addresses")
     parser.add_argument("-t", "--tvl", action="store_true", 
