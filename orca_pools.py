@@ -75,9 +75,14 @@ def pool_dict_orca(pool):
         'symbolB': pool['tokenB']['symbol'],
     }
 
+def pool_filter(pools, filter):
+    return [p for p in pools \
+            if filter.lower() == p['symbolA'].lower() \
+            or filter.lower() == p['symbolB'].lower()]
+
 def pool_print(p, verbose):
     print (f"""
-    {p['pool']} - {p['week_or_month']}ly
+    {p['pool']} - {p['platform']} - {p['week_or_month']}ly
     APR: {p['apr']:>14.0%}
     fee: {p['fee']:>14.2%}
     TVL: {p['tvl'] / 1000:>13,.0f} kUSD
@@ -97,9 +102,7 @@ def main():
     pools = [pool_dict_orca(p) for p in pools if isgood_pool_orca(p, risk_off=args.risk_off)]
 
     if args.filter:
-        pools = [p for p in pools \
-                if args.filter.lower() == p['symbolA'].lower() \
-                or args.filter.lower() == p['symbolB'].lower()]
+        pools = pool_filter(pools, args.filter)
         
     pools.sort(key = my_key(args.tvl), reverse=True)
 
