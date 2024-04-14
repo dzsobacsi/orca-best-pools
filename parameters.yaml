@@ -22,13 +22,13 @@ include:
   - "jlp"
   - "render"
 risk_include: 
-  - "85VBFQZC9TZkfaptBWjvUw7YbZjy52A6mjtPGjstQAmQ"  # W (Wormhole)
-  - "ZEUS1aR7aX8DFFJf5QjWj2ftDDdNTroMNGo8YoQm3Gq"   # ZEUS
-  - "JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN"   # JUP
   - "DLUNTKRQt7CrpqSX1naHUYoBznJ9pvMP65uCeWQgYnRK"  # SOLC
   - "HZ1JovNiVvGrGNiiYvEozEVgZ58xaU3RKwX8eACQBCt3"  # PYTH
   - "hntyVP6YFm1Hg25TN9WGLqM12b8TQmcknKrdu1oxWux"   # HNT
-  - "TNSRxcUxoT9xBG3de7PiJyTDYu7kskLqcpddxnEJAS6"   # TNSR (Tensor)
+  # - "85VBFQZC9TZkfaptBWjvUw7YbZjy52A6mjtPGjstQAmQ"  # W (Wormhole) - crappy, 4x inflation during the next 4 years. Check again in Q4 2027
+  # - "ZEUS1aR7aX8DFFJf5QjWj2ftDDdNTroMNGo8YoQm3Gq"   # ZEUS - ultra crap, > 6x inflation during the next 2.5 years. Check again in Q2 2026
+  # - "JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN"   # JUP - Ultra crap, > 7x inflation, Unclear vesting schedule
+  # - "TNSRxcUxoT9xBG3de7PiJyTDYu7kskLqcpddxnEJAS6"   # TNSR (Tensor) - crappy, 3x inflation in 3 years. Ceck again in Q4 2026 
 exclude: 
   - "solape"
   - "solc"
