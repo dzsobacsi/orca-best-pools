@@ -5,52 +5,61 @@ apr_max: 10000  # in %
 tvl_min: 10     # in kUSD
 default_display_limit: 10
 include: 
-  - "usd"
-  - "eur"
-  - "sol"
-  - "eth"
   - "btc"
-  - "uxd"
   - "cad"
   - "chf"
-  - "xau"
-  - "hbb"
   - "dai"
-  - "lst"
-  - "link"
+  - "eth"
+  - "eur"
   - "grt"
+  - "hbb"
+  - "inf"
   - "jlp"
+  - "link"
+  - "lst"
   - "render"
+  - "sol"
+  - "usd"
+  - "uxd"
+  - "xau"
 risk_include: 
   - "DLUNTKRQt7CrpqSX1naHUYoBznJ9pvMP65uCeWQgYnRK"  # SOLC
-  - "HZ1JovNiVvGrGNiiYvEozEVgZ58xaU3RKwX8eACQBCt3"  # PYTH
   - "hntyVP6YFm1Hg25TN9WGLqM12b8TQmcknKrdu1oxWux"   # HNT
-  # - "85VBFQZC9TZkfaptBWjvUw7YbZjy52A6mjtPGjstQAmQ"  # W (Wormhole) - crappy, 4x inflation during the next 4 years. Check again in Q4 2027
+  - "orcaEKTdK7LKz57vaAYr9QeNsVEPfiu6QeMU1kektZE"   # ORCA - 2x inflation, unclear vesting schedule
+  #
+  # https://token.unlocks.app/
+  #
+  # ---=== 2026 ===---
   # - "ZEUS1aR7aX8DFFJf5QjWj2ftDDdNTroMNGo8YoQm3Gq"   # ZEUS - ultra crap, > 6x inflation during the next 2.5 years. Check again in Q2 2026
-  # - "JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN"   # JUP - Ultra crap, > 7x inflation, Unclear vesting schedule
-  # - "TNSRxcUxoT9xBG3de7PiJyTDYu7kskLqcpddxnEJAS6"   # TNSR (Tensor) - crappy, 3x inflation in 3 years. Ceck again in Q4 2026 
+  # - "JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN"   # JUP  - ultra crap, > 7x inflation, Unclear vesting schedule. Check again in Q2 2026
+  # - "HZ1JovNiVvGrGNiiYvEozEVgZ58xaU3RKwX8eACQBCt3"  # PYTH - ultra crap, > 6x inflation in 3 years. Check again in Q3 2026
+  # - "TNSRxcUxoT9xBG3de7PiJyTDYu7kskLqcpddxnEJAS6"   # TNSR (Tensor) - crappy, 3x inflation in 3 years. Check again in Q4 2026 
+  # ---=== 2027 ===---
+  # - "4LLbsb5ReP3yEtYzmXewyGjcir5uXtKFURtaEUVC2AHs"  # PRCL (Parcl) - ultra crap, 8x inflation over a longer period. Check again in Q1 2027
+  # - "85VBFQZC9TZkfaptBWjvUw7YbZjy52A6mjtPGjstQAmQ"  # W (Wormhole) - crappy, 4x inflation during the next 4 years. Check again in Q4 2027
 exclude: 
-  - "solape"
-  - "solc"
-  - "sols"
-  - "solzilla"
-  - "solfnd"
-  - "solama"
-  - "solana"
-  - "sobtc"
-  - "solnic"
-  - "solbird"
-  - "sole"
-  - "mockjup"
-  - "solami"
-  - "solsponge"
-  - "solcade"
-  - "solamo"
-  - "plink"
   - "gst-sol"
+  - "mockjup"
+  - "plink"
+  - "sobtc"
   - "soladog"
+  - "solama"
+  - "solami"
+  - "solamo"
+  - "solana"
+  - "solape"
+  - "solbird"
   - "solbro"
-  - "solx"
+  - "solc"
+  - "solcade"
   - "solcc"
+  - "solcex"
+  - "sole"
+  - "solfnd"
+  - "solnic"
+  - "sols"
+  - "solsponge"
+  - "solx"
+  - "solzilla"
 addr_exclude: 
   - "EtBc6gkCvsB9c6f5wSbwG8wPjRqXMB5euptK6bqG1R4X"  # BTC - Batcat
