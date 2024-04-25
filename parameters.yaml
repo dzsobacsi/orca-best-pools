@@ -11,21 +11,20 @@ include:
   - "dai"
   - "eth"
   - "eur"
-  - "grt"
-  - "hbb"
-  - "inf"
-  - "jlp"
+  - "inf"     # https://app.sanctum.so/infinity
+  - "jlp"     # https://jup.ag/perps-earn
   - "link"
   - "lst"
-  - "render"
+  - "pai"     # https://parrot.fi/mint/
   - "sol"
   - "usd"
   - "uxd"
   - "xau"
 risk_include: 
-  - "DLUNTKRQt7CrpqSX1naHUYoBznJ9pvMP65uCeWQgYnRK"  # SOLC
+  - "HBB111SCo9jkCejsZfz8Ec8nH7T6THF8KEKSnvwT6XK6"  # HBB
   - "hntyVP6YFm1Hg25TN9WGLqM12b8TQmcknKrdu1oxWux"   # HNT
   - "orcaEKTdK7LKz57vaAYr9QeNsVEPfiu6QeMU1kektZE"   # ORCA - 2x inflation, unclear vesting schedule
+  - "DLUNTKRQt7CrpqSX1naHUYoBznJ9pvMP65uCeWQgYnRK"  # SOLC
   #
   # https://token.unlocks.app/
   #
