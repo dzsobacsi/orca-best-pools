@@ -36,8 +36,10 @@ risk_include:
   # ---=== 2027 ===---
   # - "4LLbsb5ReP3yEtYzmXewyGjcir5uXtKFURtaEUVC2AHs"  # PRCL (Parcl) - ultra crap, 8x inflation over a longer period. Check again in Q1 2027
   # - "85VBFQZC9TZkfaptBWjvUw7YbZjy52A6mjtPGjstQAmQ"  # W (Wormhole) - crappy, 4x inflation during the next 4 years. Check again in Q4 2027
+  # - "KMNo3nJsBXfcpJTVhZcXLW7RmTwTt4GVFE7suUBo9sS"   # KMNO (Kamino) - ultra crap, 10x inflation, unclear vesting schedule.
 exclude: 
   - "gst-sol"
+  - "kumasol"
   - "mockjup"
   - "plink"
   - "sobtc"
