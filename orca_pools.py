@@ -3,6 +3,7 @@
 
 import argparse
 import csv
+from math import log10
 import os
 import requests
 from tokenlist import get_tokenlist
@@ -24,7 +25,7 @@ def get_args():
     parser.add_argument("-v", "--verbose", action="store_true",
                 help="In verbose mode, you can also see the tokens' addresses")
     parser.add_argument("-t", "--tvl", action="store_true", 
-                help="Sorts the pools by sqrt(TVL)*APR instead of APR")
+                help="Sorts the pools by log(TVL)*APR instead of APR")
     parser.add_argument("-r", "--risk-off", action="store_true", 
                 help="In risk-off mode, only lower risk pools are listed")
     parser.add_argument("-f", "--filter", type=str, 
@@ -105,7 +106,7 @@ def pool_print(p, verbose):
         print(f"        tokenB: {p['tokenB']}")
 
 def my_key(is_tvl):
-    return lambda p: p['apr'] * p['tvl'] ** 0.5 if is_tvl else p['apr']
+    return lambda p: p['apr'] * log10(p['tvl']) if is_tvl else p['apr']
 
 def main():
     args = get_args()
