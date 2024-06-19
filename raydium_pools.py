@@ -12,8 +12,8 @@ def isgood_pool_rayd(pool, risk_off):
     
     if      isgood_token(pool['mintA'], risk_off=risk_off) \
         and isgood_token(pool['mintB'], risk_off=risk_off) \
-        and min(pool['week']['feeApr'], pool['month']['feeApr']) > params['apr_min'] \
-        and min(pool['week']['feeApr'], pool['month']['feeApr']) < params['apr_max'] \
+        and min(pool['week']['feeApr'], pool['month']['feeApr']) > params['apr_min'] / 100 \
+        and min(pool['week']['feeApr'], pool['month']['feeApr']) < params['apr_max'] / 100 \
         and pool['tvl'] > params['tvl_min'] * 1000:
             return True
     return False
