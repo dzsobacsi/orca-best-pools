@@ -23,7 +23,7 @@ def get_args():
     parser = argparse.ArgumentParser(
         description="Best Pools - selection of the best liquidity pools on Solana")
     parser.add_argument("-v", "--verbose", action="store_true",
-                help="In verbose mode, you can also see the tokens' addresses")
+                help="In verbose mode, the addresses of the pool and the tokens are displayed")
     parser.add_argument("-t", "--tvl", action="store_true", 
                 help="Sorts the pools by log(TVL)*APR instead of APR")
     parser.add_argument("-r", "--risk-off", action="store_true", 
@@ -86,6 +86,7 @@ def pool_dict_orca(pool):
         'tokenB': pool['tokenB']['mint'],
         'symbolA': pool['tokenA']['symbol'],
         'symbolB': pool['tokenB']['symbol'],
+        'address': pool['address'],
     }
 
 def pool_filter(pools, filter):
@@ -102,8 +103,9 @@ def pool_print(p, verbose):
     volume: {p['volume'] / 1000:>10,.0f} kUSD""")
 
     if verbose:
-        print(f"        tokenA: {p['tokenA']}")
-        print(f"        tokenB: {p['tokenB']}")
+        print(f"    token A:      {p['tokenA']}")
+        print(f"    token B:      {p['tokenB']}")
+        print(f"    pool address: {p['address']}")
 
 def my_key(is_tvl):
     return lambda p: p['apr'] * log10(p['tvl']) if is_tvl else p['apr']

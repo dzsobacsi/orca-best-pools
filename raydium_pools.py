@@ -36,6 +36,7 @@ def pool_dict_rayd(pool):
         'tokenB': pool['mintB'],
         'symbolA': tokens[pool['mintA']],
         'symbolB': tokens[pool['mintB']],
+        'address': pool['id'],
     }
 
 def get_rayd_pools(risk_off, filter):
