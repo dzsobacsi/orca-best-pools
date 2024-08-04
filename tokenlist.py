@@ -4,13 +4,12 @@ import requests
 import time
 
 
-def last_updated(filename = 'tokens.csv'):
+def token_list_age(filename = 'tokens.csv'):
     if not os.path.exists(filename):
         return 99999999
     current_time = time.time()
     modification_time = os.path.getmtime(filename)
     age_in_days = (current_time - modification_time) / 86400
-    print(f'Token list was updated {age_in_days:.2f} days ago. It is being updtated now...')
     return age_in_days 
     
 

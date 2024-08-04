@@ -5,10 +5,12 @@ import argparse
 import csv
 from math import log10
 import requests
-from tokenlist import last_updated, get_tokenlist
+from tokenlist import token_list_age, get_tokenlist
 import yaml
 
-if last_updated() > 7:
+age = token_list_age()
+if age > 7:
+    print(f'Token list was updated {age:.1f} days ago. It is being updtated now...')
     get_tokenlist()
 
 with open('parameters.yaml') as f:
