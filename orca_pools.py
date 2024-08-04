@@ -4,12 +4,11 @@
 import argparse
 import csv
 from math import log10
-import os
 import requests
-from tokenlist import get_tokenlist
+from tokenlist import last_updated, get_tokenlist
 import yaml
 
-if not os.path.exists('tokens.csv'):
+if last_updated() > 7:
     get_tokenlist()
 
 with open('parameters.yaml') as f:

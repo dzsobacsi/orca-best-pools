@@ -1,5 +1,18 @@
-import requests
+import os
 import pandas as pd
+import requests
+import time
+
+
+def last_updated(filename = 'tokens.csv'):
+    if not os.path.exists(filename):
+        return 99999999
+    current_time = time.time()
+    modification_time = os.path.getmtime(filename)
+    age_in_days = (current_time - modification_time) / 86400
+    print(f'Token list was updated {age_in_days:.2f} days ago. It is being updtated now...')
+    return age_in_days 
+    
 
 def get_tokenlist():
     url = 'https://api.mainnet.orca.so/v1/whirlpool/list'
