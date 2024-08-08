@@ -1,55 +1,26 @@
 #!./venv/bin/python
 # coding: utf-8
 
-import argparse
-import csv
+from config import args, params, tokens
 from math import log10
 import requests
-from tokenlist import token_list_age, get_tokenlist
-import yaml
 
-age = token_list_age()
-if age > 7:
-    print(f'Token list was updated {age:.1f} days ago. It is being updtated now...')
-    get_tokenlist()
 
-with open('parameters.yaml') as f:
-    params = yaml.safe_load(f)
-
-with open('tokens.csv') as f:
-    reader = csv.DictReader(f)
-    tokens = {row['address']: row['symbol'] for row in reader}
-
-def get_args():
-    parser = argparse.ArgumentParser(
-        description="Best Pools - selection of the best liquidity pools on Solana")
-    parser.add_argument("-v", "--verbose", action="store_true",
-                help="In verbose mode, the addresses of the pool and the tokens are displayed")
-    parser.add_argument("-t", "--tvl", action="store_true", 
-                help="Sorts the pools by log(TVL)*APR instead of APR")
-    parser.add_argument("-r", "--risk-off", action="store_true", 
-                help="In risk-off mode, only lower risk pools are listed")
-    parser.add_argument("-f", "--filter", type=str, 
-                help="Filter the pools by token symbol")
-    parser.add_argument("-d", "--display-limit", type=int, 
-                default=params['default_display_limit'],
-                help="Set the number of pools to display")
-    return parser.parse_args()
-
-def get_orca_pools(risk_off, filter):
+def get_orca_pools():
     pools = requests.get(params['orca_url']).json()['whirlpools']
-    pools = [pool_dict_orca(p) for p in pools if isgood_pool_orca(p, risk_off=risk_off)]
-    if filter:
-        pools = pool_filter(pools, filter)
+    pools = [pool_dict_orca(p) for p in pools if isgood_pool_orca(p)]
+    if args.filter:
+        pools = pool_filter(pools)
     return pools
 
-def isgood_token(addr, risk_off):
+
+def isgood_token(addr):
     if addr not in tokens:
         return False
     
     sym = tokens[addr].lower()
 
-    if not risk_off and addr in params['risk_include']:
+    if not args.risk_off and addr in params['risk_include']:
         return True
     
     for i in params['include']:
@@ -59,19 +30,24 @@ def isgood_token(addr, risk_off):
                 return True
     return False
 
-def isgood_pool_orca(pool, risk_off):
+
+def isgood_pool_orca(pool):
+    min_tvl = 0 if args.tvl_limit_off else params['tvl_min'] * 1000
+
     if not (
             pool.get('totalApr', {}).get('month', 0) \
         and pool.get('totalApr', {}).get('week', 0)):
             return False
     
-    if      isgood_token(pool['tokenA']['mint'], risk_off=risk_off) \
-        and isgood_token(pool['tokenB']['mint'], risk_off=risk_off) \
+    if      isgood_token(pool['tokenA']['mint']) \
+        and isgood_token(pool['tokenB']['mint']) \
         and min(pool['totalApr']['month'], pool['totalApr']['week']) > params['apr_min'] / 100 \
         and min(pool['totalApr']['month'], pool['totalApr']['week']) < params['apr_max'] / 100 \
-        and pool['tvl'] > params['tvl_min'] * 1000:
+        and pool['tvl'] > min_tvl:
             return True
+    
     return False
+
 
 def pool_dict_orca(pool):
     week_or_month = 'week' if pool['totalApr']['week'] < pool['totalApr']['month'] else 'month'
@@ -90,12 +66,14 @@ def pool_dict_orca(pool):
         'address': pool['address'],
     }
 
-def pool_filter(pools, filter):
-    return [p for p in pools \
-            if filter.lower() == p['symbolA'].lower() \
-            or filter.lower() == p['symbolB'].lower()]
 
-def pool_print(p, verbose):
+def pool_filter(pools):
+    return [p for p in pools \
+            if args.filter.lower() == p['symbolA'].lower() \
+            or args.filter.lower() == p['symbolB'].lower()]
+
+
+def pool_print(p):
     print (f"""
     {p['pool']} - {p['platform']} - {p['week_or_month']}ly
     APR: {p['apr']:>14.0%}
@@ -103,21 +81,23 @@ def pool_print(p, verbose):
     TVL: {p['tvl'] / 1000:>13,.0f} kUSD
     volume: {p['volume'] / 1000:>10,.0f} kUSD""")
 
-    if verbose:
+    if args.verbose:
         print(f"    token A:      {p['tokenA']}")
         print(f"    token B:      {p['tokenB']}")
         print(f"    pool address: {p['address']}")
 
-def my_key(is_tvl):
-    return lambda p: p['apr'] * log10(p['tvl']) if is_tvl else p['apr']
+
+def my_key():
+    return lambda p: p['apr'] * log10(p['tvl']) if args.tvl_weighted_sort else p['apr']
+
 
 def main():
-    args = get_args()
-    pools = get_orca_pools(args.risk_off, args.filter)
-    pools.sort(key = my_key(args.tvl), reverse=True)
+    pools = get_orca_pools()
+    pools.sort(key = my_key(), reverse=True)
 
     for p in pools[:args.display_limit]:
-        pool_print(p, args.verbose)
+        pool_print(p)
+
 
 if __name__ == '__main__':
     main()
