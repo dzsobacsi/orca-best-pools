@@ -32,7 +32,7 @@ def isgood_token(addr):
 
 
 def isgood_pool_orca(pool):
-    min_tvl = 0 if args.tvl_limit_off else params['tvl_min'] * 1000
+    min_tvl = 0 if args.disable_tvl_limit else params['tvl_min'] * 1000
 
     if not (
             pool.get('totalApr', {}).get('month', 0) \

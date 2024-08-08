@@ -7,7 +7,7 @@ from orca_pools import isgood_token, my_key, pool_filter, pool_print
 
 
 def isgood_pool_rayd(pool):
-    min_tvl = 0 if args.tvl_limit_off else params['tvl_min'] * 1000
+    min_tvl = 0 if args.disable_tvl_limit else params['tvl_min'] * 1000
 
     if not (
             pool.get('week', {}).get('apr', False) \
