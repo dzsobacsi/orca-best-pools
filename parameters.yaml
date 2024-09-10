@@ -2,7 +2,7 @@ orca_url: "https://api.mainnet.orca.so/v1/whirlpool/list"
 raydium_url: "https://api-v3.raydium.io/pools/info/list?poolType=concentrated&poolSortField=default&sortType=desc&pageSize=1000&page=1"
 apr_min: 10     # in %
 apr_max: 10000  # in %
-tvl_min: 20     # in kUSD
+tvl_min: 8 #20     # in kUSD
 default_display_limit: 10
 include: 
   - "btc"
@@ -23,6 +23,7 @@ include:
 risk_include: 
   - "HBB111SCo9jkCejsZfz8Ec8nH7T6THF8KEKSnvwT6XK6"  # HBB
   - "hntyVP6YFm1Hg25TN9WGLqM12b8TQmcknKrdu1oxWux"   # HNT
+  - "iotEVVZLEywoTn1QdwNPddxPWszn3zFhEot3MfL9fns"   # IOT  - Part of Helium
   - "JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN"   # JUP  - 5x inflation, but clever staking mechanism for voting, rewards and future airdrops (there is a proposal to reduce max supply from 10B to 7B, reducing 7x inflation to 5x)
   - "mb1eu7TzEc71KxDpsmsKoucSSuuoGLv1drys1oP2jh6"   # MOBILE - Part of Helium, actively running in the USA
   - "orcaEKTdK7LKz57vaAYr9QeNsVEPfiu6QeMU1kektZE"   # ORCA - 2x inflation, unclear vesting schedule
@@ -31,6 +32,7 @@ risk_include:
   # https://token.unlocks.app/
   #
   # ---=== 2025 ===---
+  # - "jtojtomepa8bep8auqc6ext5frijwffmwqx2v2f9mcl"   # JTO (Jito) - crap, 8x inflation in short term. Check again in Q1 2025
   # - "TNSRxcUxoT9xBG3de7PiJyTDYu7kskLqcpddxnEJAS6"   # TNSR (Tensor) - crappy, 3x inflation in 3 years. Check again in Q3 2025
   # - "cloudkc4ane7heqcppe3yhnznrxhmimj4myauqyhfzau"  # CLOUD - crappy, 5.5x inflation in 3 years. Check again in Q3 2025
   # ---=== 2026 ===---

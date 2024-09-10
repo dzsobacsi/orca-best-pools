@@ -16,11 +16,11 @@ def get_args(params):
         description="Best Pools - selection of the best liquidity pools on Solana")
     parser.add_argument("-v", "--verbose", action="store_true",
                         help="Display detailed information including pool and token addresses")
-    parser.add_argument("--tvl-weighted-sort", action="store_true", 
+    parser.add_argument("-t", "--tvl-weighted-sort", action="store_true", 
                         help="Sort pools by log(TVL) * APR instead of just APR")
     parser.add_argument("--disable-tvl-limit", action="store_true",
                         help="Show all pools regardless of the TVL limit")
-    parser.add_argument("--risk-off", action="store_true", 
+    parser.add_argument("-r", "--risk-off", action="store_true", 
                         help="List only lower risk pools")
     parser.add_argument("-f", "--filter", type=str, 
                         help="Filter pools by token symbol")
