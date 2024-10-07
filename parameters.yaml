@@ -2,7 +2,7 @@ orca_url: "https://api.mainnet.orca.so/v1/whirlpool/list"
 raydium_url: "https://api-v3.raydium.io/pools/info/list?poolType=concentrated&poolSortField=default&sortType=desc&pageSize=1000&page=1"
 apr_min: 10     # in %
 apr_max: 10000  # in %
-tvl_min: 8 #20     # in kUSD
+tvl_min: 10     # in kUSD
 default_display_limit: 10
 include: 
   - "btc"
@@ -26,7 +26,9 @@ risk_include:
   - "iotEVVZLEywoTn1QdwNPddxPWszn3zFhEot3MfL9fns"   # IOT  - Part of Helium
   - "JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN"   # JUP  - 5x inflation, but clever staking mechanism for voting, rewards and future airdrops (there is a proposal to reduce max supply from 10B to 7B, reducing 7x inflation to 5x)
   - "mb1eu7TzEc71KxDpsmsKoucSSuuoGLv1drys1oP2jh6"   # MOBILE - Part of Helium, actively running in the USA
+  - "nosXBVoaCTtYdLvKY6Csb4AC8JCdQKKAaWYtx2ZMoo7"   # NOSANA - Decentralized GPU sharing, launch in Jan 2025 - 2x inflation
   - "orcaEKTdK7LKz57vaAYr9QeNsVEPfiu6QeMU1kektZE"   # ORCA - 2x inflation, unclear vesting schedule
+  - "rndrizKT3MK1iimdxRdWabcF7Zg7AR5T4nud4EkHBof"   # RENDER - 2x inflation, unclear vesting schedule
   - "DLUNTKRQt7CrpqSX1naHUYoBznJ9pvMP65uCeWQgYnRK"  # SOLC
   #
   # https://token.unlocks.app/
