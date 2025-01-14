@@ -22,23 +22,26 @@ include:
   - "uxd"
   - "xau"
 risk_include: 
+  - "HeLp6NuQkmYB4pYWo2zYs22mESHXPQYzXbB8n4V98jwC"  # ai16z
   - "HBB111SCo9jkCejsZfz8Ec8nH7T6THF8KEKSnvwT6XK6"  # HBB
   - "hntyVP6YFm1Hg25TN9WGLqM12b8TQmcknKrdu1oxWux"   # HNT
   - "iotEVVZLEywoTn1QdwNPddxPWszn3zFhEot3MfL9fns"   # IOT    - Part of Helium
+  - "GQQ7zcP3a5dqrMYaD7BPdPd9Ksxcm6BgkcfnBKWsqcWn"  # kotopia
   - "mb1eu7TzEc71KxDpsmsKoucSSuuoGLv1drys1oP2jh6"   # MOBILE - Part of Helium, actively running in the USA
   - "nosXBVoaCTtYdLvKY6Csb4AC8JCdQKKAaWYtx2ZMoo7"   # NOSANA - Decentralized GPU sharing, launch in Jan 2025 - 2x inflation
   - "orcaEKTdK7LKz57vaAYr9QeNsVEPfiu6QeMU1kektZE"   # ORCA   - 2x inflation, unclear vesting schedule
   - "rndrizKT3MK1iimdxRdWabcF7Zg7AR5T4nud4EkHBof"   # RENDER - 2x inflation, unclear vesting schedule
   - "DLUNTKRQt7CrpqSX1naHUYoBznJ9pvMP65uCeWQgYnRK"  # SOLC
+  - "ZEUS1aR7aX8DFFJf5QjWj2ftDDdNTroMNGo8YoQm3Gq"   # ZEUS   - 3x inflation during the next 2 years - Decentralized BTC on Solana 22k $ZEUS needs to be staked for each minted zBTC
   #
   # ---=== 2025 ===---
-  # - "jtojtomepa8bep8auqc6ext5frijwffmwqx2v2f9mcl"   # JTO (Jito) - crap, 8x inflation in short term. Check again in Q1 2025
   # - "JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN"   # JUP    - 5x inflation, but clever staking mechanism for voting, rewards and future airdrops (there is a proposal to reduce max supply from 10B to 7B, reducing 7x inflation to 5x) Check again in Feb 2025
   # - "Grass7B4RdKfBCjTKgSqnXkqjwiGvQyFbuSCUJr3XXjs"  # GRASS - 4x inflation. Check again in Q2 2025
   # - "TNSRxcUxoT9xBG3de7PiJyTDYu7kskLqcpddxnEJAS6"   # TNSR (Tensor) - crappy, 3x inflation in 3 years. Check again in Q3 2025
+  # - "MEFNBXixkEbait3xn9bkm8WsJzXtVsaJEn4c8Sam21u"   # ME - 7.5x inflation. Check again the vesting schedule in Q3 2025
   # - "cloudkc4ane7heqcppe3yhnznrxhmimj4myauqyhfzau"  # CLOUD - crappy, 5.5x inflation in 3 years. Check again in Q3 2025
+  # - "jtojtomepa8bep8auqc6ext5frijwffmwqx2v2f9mcl"   # JTO (Jito) - 4x inflation. Check again in Q4 2025
   # ---=== 2026 ===---
-  # - "ZEUS1aR7aX8DFFJf5QjWj2ftDDdNTroMNGo8YoQm3Gq"   # ZEUS - ultra crap, > 6x inflation during the next 2.5 years. Check again in Q2 2026
   # - "85VBFQZC9TZkfaptBWjvUw7YbZjy52A6mjtPGjstQAmQ"  # W (Wormhole) - crap, > 5x inflation during the next 4 years. Check again in Q2 2026
   # - "HZ1JovNiVvGrGNiiYvEozEVgZ58xaU3RKwX8eACQBCt3"  # PYTH - ultra crap, > 6x inflation in 3 years. Check again in Q3 2026
   # - "KMNo3nJsBXfcpJTVhZcXLW7RmTwTt4GVFE7suUBo9sS"   # KMNO (Kamino) - ultra crap, 10x inflation, unclear vesting schedule. Check again in Q3 2026
@@ -46,11 +49,17 @@ risk_include:
   # - "4LLbsb5ReP3yEtYzmXewyGjcir5uXtKFURtaEUVC2AHs"  # PRCL (Parcl) - ultra crap, 8x inflation over a longer period. Check again in Q1 2027
   # - "DriFtupJYLTosbwoN8koMbEYSx54aFAVLddWsbksjwg7"  # DRIFT - ultra crap, 6x inflation 
 exclude: 
+  - "aether"
+  - "babybtc"
+  - "beth"
   - "blst"     # Blast royale - https://www.blastroyale.com/
   - "btcat"
+  - "citadail"
   - "gst-sol"
   - "kumasol"
   - "mockjup"
+  - "neur"
+  - "onlyblink"
   - "pisces"
   - "plink"
   - "sobtc"
@@ -60,6 +69,7 @@ exclude:
   - "solamo"
   - "solana"
   - "solape"
+  - "solaris"
   - "solbird"
   - "solbro"
   - "solc"
@@ -69,6 +79,7 @@ exclude:
   - "solcex"
   - "sole"
   - "solfnd"
+  - "solid"
   - "solnic"
   - "sols"
   - "solsponge"
