@@ -22,16 +22,22 @@ include:
   - "uxd"
   - "xau"
 risk_include: 
-  - "HeLp6NuQkmYB4pYWo2zYs22mESHXPQYzXbB8n4V98jwC"  # ai16z
+  - "HeLp6NuQkmYB4pYWo2zYs22mESHXPQYzXbB8n4V98jwC"  # ai16z (DefAI)
+  - "KENJSUYLASHUMfHyy5o4Hp2FdNqZg1AsUPhfH2kYvEP"   # Griffain  (DefAI)
   - "HBB111SCo9jkCejsZfz8Ec8nH7T6THF8KEKSnvwT6XK6"  # HBB
+  - "9McvH6w97oewLmPxqQEoHUAv3u5iYMyQ9AeZZhguYf1T"  # HeyAnon  (DefAI)
   - "hntyVP6YFm1Hg25TN9WGLqM12b8TQmcknKrdu1oxWux"   # HNT
   - "iotEVVZLEywoTn1QdwNPddxPWszn3zFhEot3MfL9fns"   # IOT    - Part of Helium
   - "GQQ7zcP3a5dqrMYaD7BPdPd9Ksxcm6BgkcfnBKWsqcWn"  # kotopia
   - "mb1eu7TzEc71KxDpsmsKoucSSuuoGLv1drys1oP2jh6"   # MOBILE - Part of Helium, actively running in the USA
+  - "3N2ETvNpPNAxhcaXgkhKoY1yDnQfs41Wnxsx5qNJpump"  # NEUR (DefAI)
   - "nosXBVoaCTtYdLvKY6Csb4AC8JCdQKKAaWYtx2ZMoo7"   # NOSANA - Decentralized GPU sharing, launch in Jan 2025 - 2x inflation
-  - "orcaEKTdK7LKz57vaAYr9QeNsVEPfiu6QeMU1kektZE"   # ORCA   - 2x inflation, unclear vesting schedule
-  - "rndrizKT3MK1iimdxRdWabcF7Zg7AR5T4nud4EkHBof"   # RENDER - 2x inflation, unclear vesting schedule
+  - "GekTNfm84QfyP2GdAHZ5AgACBRd69aNmgA5FDhZupump"  # ORBIT ($GRIFT) (DefAI)
+  - "orcaEKTdK7LKz57vaAYr9QeNsVEPfiu6QeMU1kektZE"   # ORCA
+  - "BEJ3VtRiBJ7wqGwAKQeKPgwCsV37QZw8nFZYsYumXrWa"  # POLY (Polytrader)
+  - "rndrizKT3MK1iimdxRdWabcF7Zg7AR5T4nud4EkHBof"   # RENDER
   - "DLUNTKRQt7CrpqSX1naHUYoBznJ9pvMP65uCeWQgYnRK"  # SOLC
+  - "8x5VqbHA8D7NkD52uNuS5nnt3PwA8pLD34ymskeSo2Wn"  # Zerebro (DefAI)
   - "ZEUS1aR7aX8DFFJf5QjWj2ftDDdNTroMNGo8YoQm3Gq"   # ZEUS   - 3x inflation during the next 2 years - Decentralized BTC on Solana 22k $ZEUS needs to be staked for each minted zBTC
   #
   # ---=== 2025 ===---
